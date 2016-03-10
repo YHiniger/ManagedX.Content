@@ -4,8 +4,8 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 
-[assembly: AssemblyTitle( "ManagedX.Content" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyTitle( "ManagedX.Content.dll" )]
+[assembly: AssemblyDescription( "ManagedX.Content.dll" )]
 #if DEBUG
 [assembly: AssemblyConfiguration( "Debug" )]
 #else
