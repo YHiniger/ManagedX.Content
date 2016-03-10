@@ -65,13 +65,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ManagedX.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\ManagedX\trunk\ManagedX.csproj">
       <Project>{d69df2e9-a523-4b18-9dc2-2473033f9739}</Project>
       <Name>ManagedX</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ManagedX.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
