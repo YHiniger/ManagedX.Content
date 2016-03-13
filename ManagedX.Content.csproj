@@ -63,8 +63,10 @@
     <Compile Include="code\plug-ins\ContentPlugIn.cs" />
     <None Include="code\plug-ins\ContentPlugIn_T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LICENSE" />
     <None Include="ManagedX.snk" />
   </ItemGroup>
   <ItemGroup>
