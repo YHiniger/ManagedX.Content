@@ -7,11 +7,11 @@ namespace ManagedX.Content
 	using Design;
 
 
-	/// <summary>A content plug-in (see <see cref="IContentPlugIn"/>) manager.</summary>
-	public sealed class ContentPlugInManager : IContentPlugInManager, IDisposable
+	/// <summary>A content plug-in (see <see cref="IContentPlugin"/>) manager.</summary>
+	public sealed class ContentPluginManager : IContentPluginManager, IDisposable
 	{
 
-		private sealed class PlugInList : List<IContentPlugIn>
+		private sealed class PlugInList : List<IContentPlugin>
 		{
 
 			internal PlugInList()
@@ -40,8 +40,8 @@ namespace ManagedX.Content
 
 		#region Constructor, finalizer
 		
-		/// <summary>Instantiates a new <see cref="ContentPlugInManager"/>.</summary>
-		public ContentPlugInManager()
+		/// <summary>Instantiates a new <see cref="ContentPluginManager"/>.</summary>
+		public ContentPluginManager()
 		{
 			plugIns = new Dictionary<Type, PlugInList>();
 			importers = new Dictionary<Type, ImporterList>();
@@ -49,7 +49,7 @@ namespace ManagedX.Content
 
 
 		/// <summary>Finalizer.</summary>
-		~ContentPlugInManager()
+		~ContentPluginManager()
 		{
 			this.Dispose( false );
 		}
@@ -64,7 +64,7 @@ namespace ManagedX.Content
 		/// <param name="contentType">The content type; must not be null.</param>
 		/// <returns>Returns an array of content plug-ins for the specified type.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		public IContentPlugIn[] GetPlugIns( Type contentType )
+		public IContentPlugin[] GetPlugins( Type contentType )
 		{
 			if( contentType == null )
 				throw new ArgumentNullException( "contentType" );
@@ -78,7 +78,7 @@ namespace ManagedX.Content
 					list.Add( importerList[ p ] );
 			}
 
-			var output = new IContentPlugIn[ list.Count ];
+			var output = new IContentPlugin[ list.Count ];
 			list.CopyTo( output, 0 );
 			list.Clear();
 			return output;
@@ -90,12 +90,12 @@ namespace ManagedX.Content
 		/// <returns></returns>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
-		public IContentPlugIn[] GetPlugIns( string fileExtension )
+		public IContentPlugin[] GetPlugins( string fileExtension )
 		{
 			if( fileExtension == null )
 				throw new ArgumentNullException( "fileExtension" );
 			
-			var list = new List<IContentPlugIn>();
+			var list = new List<IContentPlugin>();
 			foreach( var plugInList in plugIns.Values )
 			{
 				for( var i = 0; i < plugInList.Count; i++ )
@@ -112,7 +112,7 @@ namespace ManagedX.Content
 				}
 			}
 
-			var output = new IContentPlugIn[ list.Count ];
+			var output = new IContentPlugin[ list.Count ];
 			list.CopyTo( output, 0 );
 			list.Clear();
 			return output;
@@ -125,7 +125,7 @@ namespace ManagedX.Content
 		/// <returns>Returns an array of content plug-ins for the specified type.</returns>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
-		public IContentPlugIn[] GetPlugIns( Type contentType, string fileExtension )
+		public IContentPlugin[] GetPlugins( Type contentType, string fileExtension )
 		{
 			if( contentType == null )
 				throw new ArgumentNullException( "contentType" );
@@ -152,7 +152,7 @@ namespace ManagedX.Content
 				}
 			}
 
-			var output = new IContentPlugIn[ list.Count ];
+			var output = new IContentPlugin[ list.Count ];
 			list.CopyTo( output, 0 );
 			list.Clear();
 			return output;
@@ -217,24 +217,24 @@ namespace ManagedX.Content
 
 
 		/// <summary>Registers a content plug-in.</summary>
-		/// <param name="plugIn">A content plug-in.</param>
+		/// <param name="plugin">A content plug-in.</param>
 		/// <exception cref="ArgumentNullException"/>
-		public void Add( IContentPlugIn plugIn )
+		public void Add( IContentPlugin plugin )
 		{
-			if( plugIn == null )
-				throw new ArgumentNullException( "plugIn" );
+			if( plugin == null )
+				throw new ArgumentNullException( "plugin" );
 
 			PlugInList list;
-			if( !plugIns.TryGetValue( plugIn.ContentType, out list ) || list == null )
+			if( !plugIns.TryGetValue( plugin.ContentType, out list ) || list == null )
 			{
 				list = new PlugInList();
-				plugIns.Add( plugIn.ContentType, list );
+				plugIns.Add( plugin.ContentType, list );
 			}
 
-			if( !list.Contains( plugIn ) )
-				list.Add( plugIn );
+			if( !list.Contains( plugin ) )
+				list.Add( plugin );
 
-			var importer = plugIn as IContentImporter;
+			var importer = plugin as IContentImporter;
 			if( importer != null )
 			{
 				ImporterList importerList;
@@ -251,22 +251,22 @@ namespace ManagedX.Content
 
 
 		/// <summary>Removes a content plug-in from the container.</summary>
-		/// <param name="plugIn">A content plug-in.</param>
+		/// <param name="plugin">A content plug-in.</param>
 		/// <exception cref="ArgumentNullException"/>
-		public void Remove( IContentPlugIn plugIn )
+		public void Remove( IContentPlugin plugin )
 		{
-			if( plugIn == null )
-				throw new ArgumentNullException( "plugIn" );
+			if( plugin == null )
+				throw new ArgumentNullException( "plugin" );
 
 			PlugInList list;
-			if( plugIns.TryGetValue( plugIn.ContentType, out list ) && list != null )
+			if( plugIns.TryGetValue( plugin.ContentType, out list ) && list != null )
 			{
-				list.Remove( plugIn );
+				list.Remove( plugin );
 
 				if( list.Count == 0 )
-					plugIns.Remove( plugIn.ContentType );
+					plugIns.Remove( plugin.ContentType );
 
-				var importer = plugIn as IContentImporter;
+				var importer = plugin as IContentImporter;
 				if( importer != null )
 				{
 					ImporterList importerList;
@@ -300,7 +300,7 @@ namespace ManagedX.Content
 
 		#region IDisposable
 
-		/// <summary>Releases unmanaged, and optionally managed resources allocated by this <see cref="ContentPlugInManager"/>.</summary>
+		/// <summary>Releases unmanaged, and optionally managed resources allocated by this <see cref="ContentPluginManager"/>.</summary>
 		/// <param name="disposing">true to dispose all resources, false to release unmanaged resources only.</param>
 		private void Dispose( bool disposing )
 		{
@@ -340,7 +340,7 @@ namespace ManagedX.Content
 		}
 
 
-		/// <summary>Releases all resources allocated by this <see cref="ContentPlugInManager"/>.</summary>
+		/// <summary>Releases all resources allocated by this <see cref="ContentPluginManager"/>.</summary>
 		public void Dispose()
 		{
 			this.Dispose( true );

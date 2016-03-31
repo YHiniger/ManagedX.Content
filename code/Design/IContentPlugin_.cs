@@ -6,7 +6,7 @@ namespace ManagedX.Content.Design
 {
 
 	/// <summary>Defines properties and a method to properly implement a content plug-in.</summary>
-	public interface IContentPlugIn
+	public interface IContentPlugin
 	{
 
 		/// <summary>Gets the supported content type.</summary>

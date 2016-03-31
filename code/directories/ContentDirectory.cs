@@ -21,7 +21,7 @@ namespace ManagedX.Content
 
 		private IServiceProvider services;
 		private string baseDirectory;
-		private IContentPlugInManager plugInManager;
+		private IContentPluginManager plugInManager;
 		private IDisposable ownPlugInManager;
 		private bool disposed;
 
@@ -29,7 +29,7 @@ namespace ManagedX.Content
 
 		/// <summary>Instantiates a new <see cref="ContentDirectory"/>.</summary>
 		/// <param name="serviceProvider">The service provider; must not be null.
-		/// <para>If an <see cref="IContentPlugInManager"/> service is present, the <see cref="ContentDirectory"/> will use it, otherwise it will use its own.</para>
+		/// <para>If an <see cref="IContentPluginManager"/> service is present, the <see cref="ContentDirectory"/> will use it, otherwise it will use its own.</para>
 		/// </param>
 		/// <param name="baseDirectoryPath">The path to the base directory; must exist.</param>
 		/// <exception cref="ArgumentNullException"/>
@@ -58,10 +58,10 @@ namespace ManagedX.Content
 			//openStreams = new List<Stream>();
 			//cache = new Dictionary<string, object>();
 
-			plugInManager = services.GetService( typeof( IContentPlugInManager ) ) as IContentPlugInManager;
+			plugInManager = services.GetService( typeof( IContentPluginManager ) ) as IContentPluginManager;
 			if( plugInManager == null )
 			{
-				plugInManager = new ContentPlugInManager();
+				plugInManager = new ContentPluginManager();
 				ownPlugInManager = plugInManager as IDisposable;
 			}
 		}
@@ -175,7 +175,7 @@ namespace ManagedX.Content
 		/// <summary>Gets the content plug-in manager associated with the <see cref="ContentDirectory"/>.
 		/// <para>Beware that it might come from the services, and thus be shared with other content directories.</para>
 		/// </summary>
-		public IContentPlugInManager ContentPlugIns { get { return plugInManager; } }
+		public IContentPluginManager ContentPlugins { get { return plugInManager; } }
 
 
 		///// <summary>Imports content and returns it.</summary>

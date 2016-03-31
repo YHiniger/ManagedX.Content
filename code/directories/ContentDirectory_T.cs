@@ -8,10 +8,11 @@ using System.Text.RegularExpressions;
 namespace ManagedX.Content
 {
 
-	/// <summary>A <see cref="ContentDirectory" /> with archive support.</summary>
-	/// <typeparam name="TFileDescriptor">Archived file descriptor type.</typeparam>
-	/// <typeparam name="TArchive">Archive type.</typeparam>
-	public abstract class ContentDirectory<TFileDescriptor, TArchive> : ContentDirectory, IEnumerable<TArchive>
+    /// <summary>A <see cref="ContentDirectory" /> with archive support.</summary>
+    /// <typeparam name="TFileDescriptor">Archived file descriptor type.</typeparam>
+    /// <typeparam name="TArchive">Archive type.</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+    public abstract class ContentDirectory<TFileDescriptor, TArchive> : ContentDirectory, IEnumerable<TArchive>
 		where TFileDescriptor : FileDescriptor
 		where TArchive : Archive<TFileDescriptor>
 	{

@@ -6,7 +6,7 @@ namespace ManagedX.Content.Design
 {
 
 	/// <summary>Defines a method to export content to a file or a stream.</summary>
-	public interface IContentExporter<TContent> : IContentPlugIn
+	public interface IContentExporter<TContent> : IContentPlugin
 	{
 
 		/// <summary>Exports content to a stream.</summary>

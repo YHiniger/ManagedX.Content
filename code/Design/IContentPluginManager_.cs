@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 
 namespace ManagedX.Content.Design
 {
 
-	/// <summary>Defines methods to properly implement a content plug-in service.</summary>
-	public interface IContentPlugInManager : IEnumerable<Type>
+    /// <summary>Defines methods to properly implement a content plug-in service.</summary>
+    public interface IContentPluginManager : IEnumerable<Type>
 	{
 
 		/// <summary>Returns an array of content plug-ins for the specified type.</summary>
 		/// <param name="contentType">The content type; must not be null.</param>
 		/// <returns>Returns an array of content plug-ins for the specified type.</returns>
 		/// <exception cref="ArgumentNullException"/>
-		IContentPlugIn[] GetPlugIns( Type contentType );
+		IContentPlugin[] GetPlugins( Type contentType );
 
-		/// <summary>Returns a read-only collection containing all <see cref="IContentPlugIn"/> supporting the specified file extension.</summary>
+		/// <summary>Returns a read-only collection containing all <see cref="IContentPlugin"/> supporting the specified file extension.</summary>
 		/// <param name="fileExtension">A file extension.</param>
 		/// <returns>Returns a read-only collection containing all plug-ins for a given content type.</returns>
-		IContentPlugIn[] GetPlugIns( string fileExtension );
+		IContentPlugin[] GetPlugins( string fileExtension );
 
 		/// <summary>Returns an array of content plug-ins for the specified type.</summary>
 		/// <param name="contentType">The content type; must not be null.</param>
@@ -27,7 +26,7 @@ namespace ManagedX.Content.Design
 		/// <returns>Returns an array of content plug-ins for the specified type.</returns>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
-		IContentPlugIn[] GetPlugIns( Type contentType, string fileExtension );
+		IContentPlugin[] GetPlugins( Type contentType, string fileExtension );
 		
 		
 		/// <summary>Returns an array of content importers for the specified type.</summary>
@@ -44,13 +43,13 @@ namespace ManagedX.Content.Design
 
 
 		/// <summary>Adds a content plug-in to the manager.</summary>
-		/// <param name="plugIn">A content plug-in.</param>
-		void Add( IContentPlugIn plugIn );
+		/// <param name="plugin">A content plug-in.</param>
+		void Add( IContentPlugin plugin );
 
 		
 		/// <summary>Removes a content plug-in from the manager.</summary>
-		/// <param name="plugIn">A content plug-in.</param>
-		void Remove( IContentPlugIn plugIn );
+		/// <param name="plugin">A content plug-in.</param>
+		void Remove( IContentPlugin plugin );
 
 	}
 

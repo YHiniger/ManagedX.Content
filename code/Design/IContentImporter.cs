@@ -6,7 +6,7 @@ namespace ManagedX.Content.Design
 {
 
 	/// <summary>Defines a method to import content from a file or a stream.</summary>
-	public interface IContentImporter : IContentPlugIn
+	public interface IContentImporter : IContentPlugin
 	{
 
 		/// <summary>Imports content from a stream and returns it.</summary>

@@ -7,10 +7,10 @@ namespace ManagedX.Content
 
 
 	/// <summary>Base class for content importers.
-	/// <para>Inherits from <see cref="ContentPlugIn"/>.</para>
+	/// <para>Inherits from <see cref="ContentPlugin"/>.</para>
 	/// </summary>
 	/// <typeparam name="TContent">Supported content type.</typeparam>
-	public abstract class ContentImporter<TContent> : ContentPlugIn, IContentImporter<TContent>
+	public abstract class ContentImporter<TContent> : ContentPlugin, IContentImporter<TContent>
 	{
 
 

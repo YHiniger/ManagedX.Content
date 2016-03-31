@@ -12,7 +12,7 @@ namespace ManagedX.Content
 	/// <summary>Base class for content plug-ins.
 	/// <para>This class can't be instantiated.</para>
 	/// </summary>
-	public abstract class ContentPlugIn : IContentPlugIn
+	public abstract class ContentPlugin : IContentPlugin
 	{
 
 
@@ -44,7 +44,7 @@ namespace ManagedX.Content
 		/// <param name="fileExtensions">Additional file extensions; can be null.</param>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
-		internal ContentPlugIn( Type supportedContentType, string fileExtension, string[] fileExtensions )
+		internal ContentPlugin( Type supportedContentType, string fileExtension, string[] fileExtensions )
 		{
 			if( supportedContentType == null )
 				throw new ArgumentNullException( "supportedContentType" );
@@ -115,8 +115,8 @@ namespace ManagedX.Content
 		}
 
 
-		/// <summary>Returns the type name of this <see cref="ContentPlugIn"/>.</summary>
-		/// <returns>Returns the type name of this <see cref="ContentPlugIn"/>.</returns>
+		/// <summary>Returns the type name of this <see cref="ContentPlugin"/>.</summary>
+		/// <returns>Returns the type name of this <see cref="ContentPlugin"/>.</returns>
 		public override string ToString()
 		{
 			return this.GetType().Name;

@@ -156,14 +156,15 @@ namespace ManagedX.Content
 		}
 
 
-		/// <summary>Reads a <see cref="WaveFormatEx"/> structure from a stream and returns it.</summary>
-		/// <param name="reader">A <see cref="BinaryReader"/>.</param>
-		/// <returns>Returns a <see cref="WaveFormatEx"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
-		/// <exception cref="ArgumentNullException"/>
-		/// <exception cref="ObjectDisposedException"/>
-		/// <exception cref="EndOfStreamException"/>
-		/// <exception cref="IOException"/>
-		public static WaveFormatEx ReadWaveFormatEx( this BinaryReader reader )
+        /// <summary>Reads a <see cref="WaveFormatEx"/> structure from a stream and returns it.</summary>
+        /// <param name="reader">A <see cref="BinaryReader"/>.</param>
+        /// <returns>Returns a <see cref="WaveFormatEx"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="ObjectDisposedException"/>
+        /// <exception cref="EndOfStreamException"/>
+        /// <exception cref="IOException"/>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        public static WaveFormatEx ReadWaveFormatEx( this BinaryReader reader )
 		{
 			if( reader == null )
 				throw new ArgumentNullException( "reader" );
