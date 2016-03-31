@@ -49,7 +49,7 @@
     <Compile Include="code\archives\Archive.cs" />
     <Compile Include="code\archives\Archive_T.cs" />
     <Compile Include="code\archives\FileDescriptor.cs" />
-    <Compile Include="code\ContentPluginManager_.cs" />
+    <Compile Include="code\ContentPluginManager.cs" />
     <Compile Include="code\BinaryReaderExtensions.cs" />
     <Compile Include="code\Design\IContentExporter_T.cs" />
     <Compile Include="code\Design\IContentImporter.cs" />
@@ -59,10 +59,10 @@
     <Compile Include="code\directories\ContentDirectory.cs" />
     <Compile Include="code\directories\ContentDirectory_T.cs" />
     <Compile Include="code\BinaryWriterExtensions.cs" />
-    <None Include="code\ImagePlugin_.cs" />
+    <None Include="code\ImagePlugin.cs" />
     <Compile Include="code\plug-ins\ContentImporter_T.cs" />
     <Compile Include="code\plug-ins\ContentPlugin.cs" />
-    <None Include="code\plug-ins\ContentPlugin_T_.cs" />
+    <None Include="code\plug-ins\ContentPlugin_T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="README.md" />
   </ItemGroup>
