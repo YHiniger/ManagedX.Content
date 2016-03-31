@@ -9,7 +9,7 @@ namespace Erosion.Content.Pipeline
 	
 	
 	/// <summary></summary>
-	public class ImagePlugIn : ContentPlugIn<Image<Color>>
+	public class ImagePlugin : ContentPlugin<Image<Color>>
 	{
 
 		#region Static
@@ -164,11 +164,11 @@ namespace Erosion.Content.Pipeline
 	
 
 
-		private static readonly ImagePlugIn instance = new ImagePlugIn();
+		private static readonly ImagePlugin instance = new ImagePlugin();
 
 
 		/// <summary></summary>
-		public static ImagePlugIn Default
+		public static ImagePlugin Default
 		{
 			get { return instance; }
 		}
@@ -194,7 +194,7 @@ namespace Erosion.Content.Pipeline
 
 		/// <summary>Constructor.</summary>
 		/// <param name="fileExtensions"></param>
-		protected ImagePlugIn( params string[] fileExtensions )
+		protected ImagePlugin( params string[] fileExtensions )
 			: base( "bmp", Add( "tga", fileExtensions ) )
 		{
 		}
@@ -229,7 +229,7 @@ namespace Erosion.Content.Pipeline
 		}
 
 
-		/// <summary>When not overridden, returns false: the <see cref="ImagePlugIn"/> can't export images.</summary>
+		/// <summary>When not overridden, returns false: the <see cref="ImagePlugin"/> can't export images.</summary>
 		public override bool CanExport
 		{
 			get { return false; }

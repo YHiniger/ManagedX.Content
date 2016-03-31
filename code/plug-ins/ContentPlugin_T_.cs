@@ -12,10 +12,11 @@ namespace ManagedX.Framework.Content
 {
 	using Design;
 
+
 	/// <summary>Base class for <see cref="IContentPlugIn">content plug-ins (importers/exporters)</see>.</summary>
 	/// <typeparam name="TContent">Supported content type.</typeparam>
 	[DebuggerStepThrough]
-	public abstract class ContentPlugIn<TContent> : IContentPlugIn, IDisposable, IEquatable<ContentPlugIn<TContent>>
+	public abstract class ContentPlugin<TContent> : IContentPlugIn, IDisposable, IEquatable<ContentPlugIn<TContent>>
 	{
 
 		private Type contentType;
@@ -30,7 +31,7 @@ namespace ManagedX.Framework.Content
 		/// <param name="fileExtensions">Additional file extensions (not including the leading dot).</param>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
-		protected ContentPlugIn( string fileExtension, params string[] fileExtensions )
+		protected ContentPlugin( string fileExtension, params string[] fileExtensions )
 		{
 			if( fileExtension == null )
 				throw new ArgumentNullException( "fileExtension" );
@@ -76,7 +77,7 @@ namespace ManagedX.Framework.Content
 
 		
 		/// <summary>Destructor.</summary>
-		~ContentPlugIn()
+		~ContentPlugin()
 		{
 			this.Dispose( false );
 		}
