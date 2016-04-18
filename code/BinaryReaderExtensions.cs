@@ -12,7 +12,7 @@ namespace ManagedX.Content
 	{
 
 		/// <summary>Reads a <see cref="Guid"/> structure from a stream and returns it.</summary>
-		/// <param name="reader">A <see cref="BinaryReader"/>.</param>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns>Returns a <see cref="Guid"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
 		/// <exception cref="ObjectDisposedException"/>
 		/// <exception cref="ArgumentNullException"/>
@@ -34,9 +34,13 @@ namespace ManagedX.Content
 		}
 
 
-		/// <summary></summary>
-		/// <param name="reader"></param>
+		/// <summary>Reads a <see cref="Vector2"/> from the stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
 		public static Vector2 ReadVector2( this BinaryReader reader )
 		{
 			if( reader == null )
@@ -49,9 +53,13 @@ namespace ManagedX.Content
 		}
 
 
-		/// <summary></summary>
-		/// <param name="reader"></param>
+		/// <summary>Reads a <see cref="Vector3"/> from the stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
 		public static Vector3 ReadVector3( this BinaryReader reader )
 		{
 			if( reader == null )
@@ -64,10 +72,14 @@ namespace ManagedX.Content
 			return result;
 		}
 
-		
-		/// <summary></summary>
-		/// <param name="reader"></param>
+
+		/// <summary>Reads a <see cref="Vector4"/> from the stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
 		public static Vector4 ReadVector4( this BinaryReader reader )
 		{
 			if( reader == null )
@@ -82,9 +94,32 @@ namespace ManagedX.Content
 		}
 
 
-		/// <summary></summary>
-		/// <param name="reader"></param>
+		/// <summary>Reads a <see cref="Ray"/> from the stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
+		public static Ray ReadRay( this BinaryReader reader )
+		{
+			if( reader == null )
+				throw new ArgumentNullException( "reader" );
+
+			Ray result;
+			result.Position = reader.ReadVector3();
+			result.Direction = reader.ReadVector3();
+			return result;
+		}
+
+
+		/// <summary>Reads a <see cref="Quaternion"/> from the stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
 		public static Quaternion ReadQuaternion( this BinaryReader reader )
 		{
 			if( reader == null )
@@ -99,9 +134,13 @@ namespace ManagedX.Content
 		}
 
 
-		/// <summary></summary>
-		/// <param name="reader"></param>
+		/// <summary>Reads a <see cref="Matrix"/> from the stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
 		public static Matrix ReadMatrix( this BinaryReader reader )
 		{
 			if( reader == null )
@@ -135,7 +174,7 @@ namespace ManagedX.Content
 
 
 		/// <summary>Reads a <see cref="WaveFormat"/> structure from a stream and returns it.</summary>
-		/// <param name="reader">A <see cref="BinaryReader"/>.</param>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns>Returns a <see cref="WaveFormat"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ObjectDisposedException"/>
@@ -156,15 +195,15 @@ namespace ManagedX.Content
 		}
 
 
-        /// <summary>Reads a <see cref="WaveFormatEx"/> structure from a stream and returns it.</summary>
-        /// <param name="reader">A <see cref="BinaryReader"/>.</param>
-        /// <returns>Returns a <see cref="WaveFormatEx"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
-        /// <exception cref="ArgumentNullException"/>
-        /// <exception cref="ObjectDisposedException"/>
-        /// <exception cref="EndOfStreamException"/>
-        /// <exception cref="IOException"/>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        public static WaveFormatEx ReadWaveFormatEx( this BinaryReader reader )
+		/// <summary>Reads a <see cref="WaveFormatEx"/> structure from a stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
+		/// <returns>Returns a <see cref="WaveFormatEx"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix" )]
+		public static WaveFormatEx ReadWaveFormatEx( this BinaryReader reader )
 		{
 			if( reader == null )
 				throw new ArgumentNullException( "reader" );
@@ -178,7 +217,7 @@ namespace ManagedX.Content
 
 
 		/// <summary>Reads a <see cref="WaveFormatExtensible"/> structure from a stream and returns it.</summary>
-		/// <param name="reader">A <see cref="BinaryReader"/>.</param>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns>Returns a <see cref="WaveFormatExtensible"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ObjectDisposedException"/>

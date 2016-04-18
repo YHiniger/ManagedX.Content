@@ -4,8 +4,6 @@ using System.IO;
 
 namespace ManagedX.Content
 {
-	using Audio;
-
 
 	/// <summary>Provides extension methods to <see cref="BinaryWriter"/> instances.</summary>
 	public static class BinaryWriterExtensions
@@ -14,6 +12,9 @@ namespace ManagedX.Content
 		/// <summary></summary>
 		/// <param name="writer"></param>
 		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
 		public static void Write( this BinaryWriter writer, Guid value )
 		{
 			if( writer == null )
@@ -26,6 +27,9 @@ namespace ManagedX.Content
 		/// <summary></summary>
 		/// <param name="writer"></param>
 		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
 		public static void Write( this BinaryWriter writer, Vector2 value )
 		{
 			if( writer == null )
@@ -39,6 +43,9 @@ namespace ManagedX.Content
 		/// <summary></summary>
 		/// <param name="writer"></param>
 		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
 		public static void Write( this BinaryWriter writer, Vector3 value )
 		{
 			if( writer == null )
@@ -53,6 +60,9 @@ namespace ManagedX.Content
 		/// <summary></summary>
 		/// <param name="writer"></param>
 		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
 		public static void Write( this BinaryWriter writer, Vector4 value )
 		{
 			if( writer == null )
@@ -68,6 +78,25 @@ namespace ManagedX.Content
 		/// <summary></summary>
 		/// <param name="writer"></param>
 		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
+		public static void Write( this BinaryWriter writer, Ray value )
+		{
+			if( writer == null )
+				throw new ArgumentNullException( "writer" );
+
+			writer.Write( value.Position );
+			writer.Write( value.Direction );
+		}
+
+
+		/// <summary></summary>
+		/// <param name="writer"></param>
+		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
 		public static void Write( this BinaryWriter writer, Quaternion value )
 		{
 			if( writer == null )
@@ -83,6 +112,9 @@ namespace ManagedX.Content
 		/// <summary></summary>
 		/// <param name="writer"></param>
 		/// <param name="value"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
 		public static void Write( this BinaryWriter writer, Matrix value )
 		{
 			if( writer == null )
