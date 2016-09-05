@@ -77,6 +77,26 @@ namespace ManagedX.Content
 
 		/// <summary></summary>
 		/// <param name="writer"></param>
+		/// <param name="box"></param>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="IOException"/>
+		public static void Write( this BinaryWriter writer, BoundingBox box )
+		{
+			try
+			{
+				Write( writer, box.Min );
+				Write( writer, box.Max );
+			}
+			catch( Exception )
+			{
+				throw;
+			}
+		}
+
+
+		/// <summary></summary>
+		/// <param name="writer"></param>
 		/// <param name="value"></param>
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ObjectDisposedException"/>

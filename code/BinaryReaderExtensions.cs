@@ -14,8 +14,8 @@ namespace ManagedX.Content
 		/// <summary>Reads a <see cref="Guid"/> structure from a stream and returns it.</summary>
 		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
 		/// <returns>Returns a <see cref="Guid"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
-		/// <exception cref="ObjectDisposedException"/>
 		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
 		/// <exception cref="EndOfStreamException"/>
 		/// <exception cref="IOException"/>
 		public static Guid ReadGuid( this BinaryReader reader )
@@ -30,6 +30,29 @@ namespace ManagedX.Content
 			catch( ArgumentException )
 			{
 				throw new EndOfStreamException();
+			}
+		}
+
+
+		/// <summary>Reads a <see cref="TimeSpan"/> structure from a stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
+		/// <returns>Returns a <see cref="TimeSpan"/> structure initialized with data from the specified <paramref name="reader"/>.</returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
+		public static TimeSpan ReadTimeSpan( this BinaryReader reader )
+		{
+			if( reader == null )
+				throw new ArgumentNullException( "reader" );
+
+			try
+			{
+				return TimeSpan.FromTicks( reader.ReadInt64() );
+			}
+			catch( Exception )
+			{
+				throw;
 			}
 		}
 
@@ -91,6 +114,29 @@ namespace ManagedX.Content
 			result.Z = reader.ReadSingle();
 			result.W = reader.ReadSingle();
 			return result;
+		}
+
+
+		/// <summary>Reads a <see cref="BoundingBox"/> from the stream and returns it.</summary>
+		/// <param name="reader">A <see cref="BinaryReader"/>; must not be null.</param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentNullException"/>
+		/// <exception cref="ObjectDisposedException"/>
+		/// <exception cref="EndOfStreamException"/>
+		/// <exception cref="IOException"/>
+		public static BoundingBox ReadBoundingBox( this BinaryReader reader )
+		{
+			try
+			{
+				BoundingBox box;
+				box.Min = ReadVector3( reader );
+				box.Max = ReadVector3( reader );
+				return box;
+			}
+			catch( Exception )
+			{
+				throw;
+			}
 		}
 
 
