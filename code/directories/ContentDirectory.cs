@@ -268,9 +268,7 @@ namespace ManagedX.Content
 				catch( Exception )
 				{
 					if( input.CanSeek )
-					{
 						input.Position = 0L;
-					}
 					else
 					{
 						input.Dispose();
