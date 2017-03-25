@@ -53,6 +53,7 @@
     <Compile Include="code\archives\FileDescriptor.cs" />
     <Compile Include="code\ContentPluginManager.cs" />
     <Compile Include="code\BinaryReaderExtensions.cs" />
+    <Compile Include="code\CRC32.cs" />
     <Compile Include="code\Design\IContentExporter_T.cs" />
     <Compile Include="code\Design\IContentImporter.cs" />
     <Compile Include="code\Design\IContentPlugin.cs" />
