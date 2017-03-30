@@ -18,7 +18,7 @@ namespace ManagedX.Content
 	{
 
 		private Dictionary<string, TFileDescriptor> descriptors;
-		private List<MemoryStream> openStreams;
+		//private List<MemoryStream> openStreams;
 
 
 
@@ -43,7 +43,7 @@ namespace ManagedX.Content
 			: base( path, mode, access, share )
 		{
 			descriptors = new Dictionary<string, TFileDescriptor>();
-			openStreams = new List<MemoryStream>();
+			//openStreams = new List<MemoryStream>();
 		}
 
 
@@ -72,21 +72,21 @@ namespace ManagedX.Content
 		{
 			if( disposing )
 			{
-				if( openStreams != null )
-				{
-					while( openStreams.Count > 0 )
-					{
-						try
-						{
-							openStreams[ 0 ].Dispose();
-						}
-						catch( ObjectDisposedException )
-						{
-						}
-						openStreams.RemoveAt( 0 );
-					}
-					openStreams = null;
-				}
+				//if( openStreams != null )
+				//{
+				//	while( openStreams.Count > 0 )
+				//	{
+				//		try
+				//		{
+				//			openStreams[ 0 ].Dispose();
+				//		}
+				//		catch( ObjectDisposedException )
+				//		{
+				//		}
+				//		openStreams.RemoveAt( 0 );
+				//	}
+				//	openStreams = null;
+				//}
 
 				if( descriptors != null )
 				{
@@ -260,8 +260,7 @@ namespace ManagedX.Content
 				throw new InvalidDataException( this.GetType().Name + ".Open" );
 
 			var output = new MemoryStream( buffer, 0, buffer.Length, false, true );
-			openStreams.Add( output );
-
+			//openStreams.Add( output );
 			return output;
 		}
 

@@ -47,6 +47,7 @@ namespace ManagedX.Content
 		};
 
 
+
 		/// <summary>Updates a CRC-32 value.</summary>
 		/// <param name="lastCrc">The previous CRC-32 value.</param>
 		/// <param name="values">An array of bytes containing the data; must not be null.</param>
