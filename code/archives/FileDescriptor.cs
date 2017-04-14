@@ -13,7 +13,7 @@ namespace ManagedX.Content
 	public class FileDescriptor : IFileDescriptor, IEquatable<FileDescriptor>
 	{
 
-		private Archive archive;
+		private ArchiveStream archive;
 		private string fileName;
 		private long length;
 		private long position;
@@ -28,7 +28,7 @@ namespace ManagedX.Content
 		/// <exception cref="ArgumentNullException"/>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="ArgumentOutOfRangeException"/>
-		public FileDescriptor( Archive archive, string name, long length, long position )
+		public FileDescriptor( ArchiveStream archive, string name, long length, long position )
 		{
 			if( archive == null )
 				throw new ArgumentNullException( "archive" );

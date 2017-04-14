@@ -48,8 +48,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="code\archives\Archive.cs" />
-    <Compile Include="code\archives\Archive_T.cs" />
+    <Compile Include="code\archives\ArchiveStream.cs" />
+    <Compile Include="code\archives\ArchiveStream_T.cs" />
     <Compile Include="code\archives\FileDescriptor.cs" />
     <Compile Include="code\ContentPluginManager.cs" />
     <Compile Include="code\BinaryReaderExtensions.cs" />

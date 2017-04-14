@@ -14,7 +14,7 @@ namespace ManagedX.Content
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public abstract class ContentDirectory<TFileDescriptor, TArchive> : ContentDirectory, IEnumerable<TArchive>
 		where TFileDescriptor : FileDescriptor
-		where TArchive : Archive<TFileDescriptor>
+		where TArchive : ArchiveStream<TFileDescriptor>
 	{
 
 

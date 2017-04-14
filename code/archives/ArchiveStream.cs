@@ -9,9 +9,9 @@ namespace ManagedX.Content
 	using Design;
 
 
-	/// <summary>Base class for archives.</summary>
+	/// <summary>Base class for archive streams.</summary>
 	[DebuggerStepThrough]
-	public abstract class Archive : FileStream
+	public abstract class ArchiveStream : FileStream
 	{
 
 		private FileInfo fileInfo;
@@ -36,7 +36,7 @@ namespace ManagedX.Content
 		/// <exception cref="UnauthorizedAccessException"/>
 		/// <exception cref="System.Security.SecurityException"/>
 		/// <exception cref="IOException"/>
-		internal Archive( string path, FileMode mode, FileAccess access, FileShare share )
+		internal ArchiveStream( string path, FileMode mode, FileAccess access, FileShare share )
 			: base( path, mode, access, share )
 		{
 			fileInfo = new FileInfo( base.Name );

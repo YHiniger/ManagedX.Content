@@ -11,9 +11,9 @@ namespace ManagedX.Content
 	using Design;
 
 
-	/// <summary>A <see cref="FileStream" /> dedicated to archives.</summary>
+	/// <summary>A <see cref="FileStream"/> dedicated to archives.</summary>
 	/// <typeparam name="TFileDescriptor">File descriptor type.</typeparam>
-	public abstract class Archive<TFileDescriptor> : Archive, IEnumerable<TFileDescriptor>
+	public abstract class ArchiveStream<TFileDescriptor> : ArchiveStream, IEnumerable<TFileDescriptor>
 		where TFileDescriptor : FileDescriptor
 	{
 
@@ -39,7 +39,7 @@ namespace ManagedX.Content
 		/// <exception cref="UnauthorizedAccessException"/>
 		/// <exception cref="SecurityException"/>
 		/// <exception cref="IOException"/>
-		protected Archive( string path, FileMode mode, FileAccess access, FileShare share )
+		protected ArchiveStream( string path, FileMode mode, FileAccess access, FileShare share )
 			: base( path, mode, access, share )
 		{
 			descriptors = new Dictionary<string, TFileDescriptor>();
@@ -59,7 +59,7 @@ namespace ManagedX.Content
 		/// <exception cref="UnauthorizedAccessException"/>
 		/// <exception cref="SecurityException"/>
 		/// <exception cref="IOException"/>
-		protected Archive( string path )
+		protected ArchiveStream( string path )
 			: this( path, FileMode.Open, FileAccess.Read, FileShare.Read )
 		{
 		}
