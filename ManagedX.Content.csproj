@@ -63,6 +63,7 @@
     <Compile Include="code\directories\ContentDirectory_T.cs" />
     <Compile Include="code\BinaryWriterExtensions.cs" />
     <None Include="code\ImagePlugin.cs" />
+    <Compile Include="code\FileSystemInfoExtensions.cs" />
     <Compile Include="code\plug-ins\ContentImporter_T.cs" />
     <Compile Include="code\plug-ins\ContentPlugin.cs" />
     <None Include="code\plug-ins\ContentPlugin_T.cs" />

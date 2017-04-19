@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.InteropServices;
 
 
 namespace ManagedX.Content
@@ -18,6 +18,7 @@ namespace ManagedX.Content
 	[DebuggerStepThrough]
 	public abstract class ContentDirectory : IDisposable
 	{
+
 
 		private IServiceProvider services;
 		private string baseDirectory;
@@ -124,6 +125,9 @@ namespace ManagedX.Content
 		/// </summary>
 		public virtual string DataDirectoryPath { get { return string.Copy( baseDirectory ); } }
 
+
+		/// <summary>When overridden, gets a value indicating whether the </summary>
+		public abstract bool IsDataDirectorySymbolicLink { get; }
 
 
 		/// <summary>Initializes this <see cref="ContentDirectory"/>.</summary>
