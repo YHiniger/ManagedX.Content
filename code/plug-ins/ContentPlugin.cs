@@ -46,9 +46,6 @@ namespace ManagedX.Content
 		/// <exception cref="ArgumentException"/>
 		internal ContentPlugin( Type supportedContentType, string fileExtension, string[] fileExtensions )
 		{
-			if( supportedContentType == null )
-				throw new ArgumentNullException( "supportedContentType" );
-
 			try
 			{
 				fileExtension = Normalize( fileExtension );
@@ -59,10 +56,11 @@ namespace ManagedX.Content
 			}
 
 			
-			contentType = supportedContentType;
-			supportedExtensions = new List<string>();
-			supportedExtensions.Add( fileExtension );
-			
+			contentType = supportedContentType ?? throw new ArgumentNullException( "supportedContentType" );
+			supportedExtensions = new List<string>
+			{
+				fileExtension
+			};
 			if( fileExtensions != null )
 			{
 				for( var f = 0; f < fileExtensions.Length; f++ )

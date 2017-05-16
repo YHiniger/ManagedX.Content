@@ -81,8 +81,7 @@ namespace ManagedX.Content
 				throw new ArgumentException( "The specified file/directory is not a symbolic link.", "self" );
 
 
-			var fileInfo = self as FileInfo;
-			if( fileInfo != null )
+			if( self is FileInfo fileInfo )
 			{
 				if( !self.Exists )
 					throw new FileNotFoundException();
@@ -107,8 +106,7 @@ namespace ManagedX.Content
 			}
 
 
-			var directoryInfo = self as DirectoryInfo;
-			if( directoryInfo != null )
+			if( self is DirectoryInfo directoryInfo )
 			{
 				if( !self.Exists )
 					throw new DirectoryNotFoundException();

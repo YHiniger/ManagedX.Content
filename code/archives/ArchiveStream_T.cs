@@ -112,8 +112,7 @@ namespace ManagedX.Content
 				if( fileName == null )
 					return null;
 
-				TFileDescriptor descriptor;
-				if( !descriptors.TryGetValue( fileName.ToUpperInvariant(), out descriptor ) )
+				if( !descriptors.TryGetValue( fileName.ToUpperInvariant(), out TFileDescriptor descriptor ) )
 					descriptor = null;
 
 				return descriptor;

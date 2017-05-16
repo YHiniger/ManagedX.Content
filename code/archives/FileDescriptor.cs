@@ -30,9 +30,6 @@ namespace ManagedX.Content
 		/// <exception cref="ArgumentOutOfRangeException"/>
 		public FileDescriptor( ArchiveStream archive, string name, long length, long position )
 		{
-			if( archive == null )
-				throw new ArgumentNullException( "archive" );
-
 			if( name == null )
 				throw new ArgumentNullException( "name" );
 			
@@ -46,7 +43,7 @@ namespace ManagedX.Content
 			if( position < 0L )
 				throw new ArgumentOutOfRangeException( "position" );
 
-			this.archive = archive;
+			this.archive = archive ?? throw new ArgumentNullException( "archive" );
 			this.fileName = name;
 			this.length = length;
 			this.position = position;

@@ -71,8 +71,7 @@ namespace ManagedX.Content
 
 			var list = new PlugInList();
 
-			ImporterList importerList;
-			if( importers.TryGetValue( contentType, out importerList ) && importerList != null )
+			if( importers.TryGetValue( contentType, out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 					list.Add( importerList[ p ] );
@@ -135,8 +134,7 @@ namespace ManagedX.Content
 
 			var list = new PlugInList();
 
-			ImporterList importerList;
-			if( importers.TryGetValue( contentType, out importerList ) && importerList != null )
+			if( importers.TryGetValue( contentType, out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 				{
@@ -169,14 +167,12 @@ namespace ManagedX.Content
 		public IContentImporter<TContent>[] GetImporters<TContent>()
 		{
 			var list = new List<IContentImporter<TContent>>();
-			
-			ImporterList importerList;
-			if( importers.TryGetValue( typeof( TContent ), out importerList ) && importerList != null )
+
+			if( importers.TryGetValue( typeof( TContent ), out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 				{
-					var importer = importerList[ p ] as IContentImporter<TContent>;
-					if( importer != null )
+					if( importerList[ p ] is IContentImporter<TContent> importer )
 						list.Add( importer );
 				}
 			}
@@ -196,13 +192,11 @@ namespace ManagedX.Content
 		{
 			var list = new List<IContentImporter<TContent>>();
 
-			ImporterList importerList;
-			if( importers.TryGetValue( typeof( TContent ), out importerList ) && importerList != null )
+			if( importers.TryGetValue( typeof( TContent ), out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 				{
-					var importer = importerList[ p ] as IContentImporter<TContent>;
-					if( importer != null && importer.Supports( fileExtension ) )
+					if( importerList[ p ] is IContentImporter<TContent> importer && importer.Supports( fileExtension ) )
 						list.Add( importer );
 				}
 			}
@@ -224,8 +218,7 @@ namespace ManagedX.Content
 			if( plugin == null )
 				throw new ArgumentNullException( "plugin" );
 
-			PlugInList list;
-			if( !plugIns.TryGetValue( plugin.ContentType, out list ) || list == null )
+			if( !plugIns.TryGetValue( plugin.ContentType, out PlugInList list ) || list == null )
 			{
 				list = new PlugInList();
 				plugIns.Add( plugin.ContentType, list );
@@ -234,11 +227,9 @@ namespace ManagedX.Content
 			if( !list.Contains( plugin ) )
 				list.Add( plugin );
 
-			var importer = plugin as IContentImporter;
-			if( importer != null )
+			if( plugin is IContentImporter importer )
 			{
-				ImporterList importerList;
-				if( !importers.TryGetValue( importer.ContentType, out importerList ) || importerList == null )
+				if( !importers.TryGetValue( importer.ContentType, out ImporterList importerList ) || importerList == null )
 				{
 					importerList = new ImporterList();
 					importers.Add( importer.ContentType, importerList );
@@ -258,19 +249,16 @@ namespace ManagedX.Content
 			if( plugin == null )
 				throw new ArgumentNullException( "plugin" );
 
-			PlugInList list;
-			if( plugIns.TryGetValue( plugin.ContentType, out list ) && list != null )
+			if( plugIns.TryGetValue( plugin.ContentType, out PlugInList list ) && list != null )
 			{
 				list.Remove( plugin );
 
 				if( list.Count == 0 )
 					plugIns.Remove( plugin.ContentType );
 
-				var importer = plugin as IContentImporter;
-				if( importer != null )
+				if( plugin is IContentImporter importer )
 				{
-					ImporterList importerList;
-					if( importers.TryGetValue( importer.ContentType, out importerList ) && importerList != null )
+					if( importers.TryGetValue( importer.ContentType, out ImporterList importerList ) && importerList != null )
 					{
 						importerList.Remove( importer );
 						if( importerList.Count == 0 )

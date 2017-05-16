@@ -60,8 +60,7 @@ namespace ManagedX.Content
 				if( fileName.Length == 0 || fileName.IndexOfAny( Path.GetInvalidPathChars() ) > -1 )
 					return null;
 
-				TArchive output;
-				archives.TryGetValue( fileName.ToUpperInvariant(), out output );
+				archives.TryGetValue( fileName.ToUpperInvariant(), out TArchive output );
 				return output;
 			}
 		}

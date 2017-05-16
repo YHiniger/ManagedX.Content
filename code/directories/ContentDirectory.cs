@@ -39,9 +39,6 @@ namespace ManagedX.Content
 		[SuppressMessage( "Microsoft.Reliability", "CA2000" )]
 		protected ContentDirectory( IServiceProvider serviceProvider, string baseDirectoryPath )
 		{
-			if( serviceProvider == null )
-				throw new ArgumentNullException( "serviceProvider" );
-
 			if( baseDirectoryPath == null )
 				throw new ArgumentNullException( "baseDirectoryPath" );
 
@@ -54,7 +51,7 @@ namespace ManagedX.Content
 			if( !Directory.Exists( baseDirectoryPath ) )
 				throw new DirectoryNotFoundException();
 
-			services = serviceProvider;
+			services = serviceProvider ?? throw new ArgumentNullException( "serviceProvider" );
 			baseDirectory = baseDirectoryPath;
 			//openStreams = new List<Stream>();
 			//cache = new Dictionary<string, object>();
