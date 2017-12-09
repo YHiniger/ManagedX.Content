@@ -21,6 +21,7 @@ namespace ManagedX.Content
 
 		}
 
+
 		private sealed class ImporterList : List<IContentImporter>
 		{
 
@@ -34,7 +35,7 @@ namespace ManagedX.Content
 
 
 		private Dictionary<Type, PlugInList> plugIns;
-		private Dictionary<Type, ImporterList> importers;
+		private Dictionary<Guid, ImporterList> importers;
 
 
 
@@ -44,7 +45,7 @@ namespace ManagedX.Content
 		public ContentPluginManager()
 		{
 			plugIns = new Dictionary<Type, PlugInList>();
-			importers = new Dictionary<Type, ImporterList>();
+			importers = new Dictionary<Guid, ImporterList>();
 		}
 
 
@@ -71,7 +72,7 @@ namespace ManagedX.Content
 
 			var list = new PlugInList();
 
-			if( importers.TryGetValue( contentType, out ImporterList importerList ) && importerList != null )
+			if( importers.TryGetValue( contentType.GUID, out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 					list.Add( importerList[ p ] );
@@ -134,7 +135,7 @@ namespace ManagedX.Content
 
 			var list = new PlugInList();
 
-			if( importers.TryGetValue( contentType, out ImporterList importerList ) && importerList != null )
+			if( importers.TryGetValue( contentType.GUID, out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 				{
@@ -164,20 +165,20 @@ namespace ManagedX.Content
 		/// <summary>Returns an array of content importers for the specified type.</summary>
 		/// <typeparam name="TContent">Content type.</typeparam>
 		/// <returns>Returns an array of content importers for the specified type.</returns>
-		public IContentImporter<TContent>[] GetImporters<TContent>()
+		public ContentImporter<TContent>[] GetImporters<TContent>()
 		{
-			var list = new List<IContentImporter<TContent>>();
+			var list = new List<ContentImporter<TContent>>();
 
-			if( importers.TryGetValue( typeof( TContent ), out ImporterList importerList ) && importerList != null )
+			if( importers.TryGetValue( typeof( TContent ).GUID, out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 				{
-					if( importerList[ p ] is IContentImporter<TContent> importer )
+					if( importerList[ p ] is ContentImporter<TContent> importer )
 						list.Add( importer );
 				}
 			}
 
-			var output = new IContentImporter<TContent>[ list.Count ];
+			var output = new ContentImporter<TContent>[ list.Count ];
 			list.CopyTo( output, 0 );
 			list.Clear();
 			return output;
@@ -188,20 +189,20 @@ namespace ManagedX.Content
 		/// <typeparam name="TContent">Content type.</typeparam>
 		/// <param name="fileExtension">A file extension.</param>
 		/// <returns>Returns an array of content importers for the specified type.</returns>
-		public IContentImporter<TContent>[] GetImporters<TContent>( string fileExtension )
+		public ContentImporter<TContent>[] GetImporters<TContent>( string fileExtension )
 		{
-			var list = new List<IContentImporter<TContent>>();
+			var list = new List<ContentImporter<TContent>>();
 
-			if( importers.TryGetValue( typeof( TContent ), out ImporterList importerList ) && importerList != null )
+			if( importers.TryGetValue( typeof( TContent ).GUID, out ImporterList importerList ) && importerList != null )
 			{
 				for( var p = 0; p < importerList.Count; p++ )
 				{
-					if( importerList[ p ] is IContentImporter<TContent> importer && importer.Supports( fileExtension ) )
+					if( importerList[ p ] is ContentImporter<TContent> importer && importer.Supports( fileExtension ) )
 						list.Add( importer );
 				}
 			}
 
-			var output = new IContentImporter<TContent>[ list.Count ];
+			var output = new ContentImporter<TContent>[ list.Count ];
 			list.CopyTo( output, 0 );
 			list.Clear();
 			return output;
@@ -229,10 +230,10 @@ namespace ManagedX.Content
 
 			if( plugin is IContentImporter importer )
 			{
-				if( !importers.TryGetValue( importer.ContentType, out ImporterList importerList ) || importerList == null )
+				if( !importers.TryGetValue( importer.ContentType.GUID, out ImporterList importerList ) || importerList == null )
 				{
 					importerList = new ImporterList();
-					importers.Add( importer.ContentType, importerList );
+					importers.Add( importer.ContentType.GUID, importerList );
 				}
 
 				if( !importerList.Contains( importer ) )
@@ -258,11 +259,11 @@ namespace ManagedX.Content
 
 				if( plugin is IContentImporter importer )
 				{
-					if( importers.TryGetValue( importer.ContentType, out ImporterList importerList ) && importerList != null )
+					if( importers.TryGetValue( importer.ContentType.GUID, out ImporterList importerList ) && importerList != null )
 					{
 						importerList.Remove( importer );
 						if( importerList.Count == 0 )
-							importers.Remove( importer.ContentType );
+							importers.Remove( importer.ContentType.GUID );
 					}
 				}
 			}
@@ -280,7 +281,7 @@ namespace ManagedX.Content
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return plugIns.Keys.GetEnumerator();
 		}
 
 		#endregion IEnumerable

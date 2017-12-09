@@ -1,0 +1,22 @@
+﻿Le gestionnaire de contenu doit pouvoir supporter le chargement de ressources brutes (.wav, .png, .mpg, .xml) et de ressources pré-compilées (.xaudio, .ximage, .xvideo, .xdata).
+Les ressources pré-compilées vont dans le dossier \Content\.
+Les ressources brutes destinées à être pré-compilées se situent dans le dossier \ProjectContent\. Les ressources traitées sont alors sauvegardées dans le dossier \Content\.
+Les ressources brutes issues de mods vont dans le dossier \UserContent\Mods\NOM_DU_MOD\.
+
+Afin de limiter les accès au disque, les ressources devront être empaquetées en archives. Ces archives peuvent être compressées ou non.
+
+
+--- HDR ---
+8CC
+Version
+--- TOC ---
+	Filename			- File name.
+	Offset				- Position of the file in the archive.
+	LengthCompressed	\ LengthCompressed < LengthUncompressed, unless the file is
+	LengthUncompressed	/ uncompressed, in which case LengthCompressed = LengthUncompressed.
+	CreationDate		- File creation date & time.
+	LastModified		- Date & time of the last file modification.
+...
+--- DATA ---
+...
+--- EOF ---

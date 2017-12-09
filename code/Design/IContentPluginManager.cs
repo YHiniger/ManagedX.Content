@@ -32,13 +32,13 @@ namespace ManagedX.Content.Design
 		/// <summary>Returns an array of content importers for the specified type.</summary>
 		/// <typeparam name="TContent">Content type.</typeparam>
 		/// <returns>Returns an array of content importers for the specified type.</returns>
-		IContentImporter<TContent>[] GetImporters<TContent>();
+		ContentImporter<TContent>[] GetImporters<TContent>();
 
 		/// <summary>Returns an array of content importers for the specified type.</summary>
 		/// <typeparam name="TContent">Content type.</typeparam>
 		/// <param name="fileExtension">A file extension.</param>
 		/// <returns>Returns an array of content importers for the specified type.</returns>
-		IContentImporter<TContent>[] GetImporters<TContent>( string fileExtension );
+		ContentImporter<TContent>[] GetImporters<TContent>( string fileExtension );
 
 
 

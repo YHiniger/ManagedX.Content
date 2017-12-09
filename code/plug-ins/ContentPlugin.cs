@@ -33,8 +33,8 @@ namespace ManagedX.Content
 
 
 
-		private Type contentType;
-		private List<string> supportedExtensions;
+		private readonly Type contentType;
+		private readonly List<string> supportedExtensions;
 
 
 
@@ -84,11 +84,11 @@ namespace ManagedX.Content
 
 
 		/// <summary>Gets the supported content type.</summary>
-		public Type ContentType { get { return contentType; } }
+		public Type ContentType => contentType;
 
 
 		/// <summary>Gets a read-only collection of all supported file extensions.</summary>
-		public ReadOnlyCollection<string> SupportedExtensions { get { return new ReadOnlyCollection<string>( supportedExtensions ); } }
+		public ReadOnlyCollection<string> SupportedExtensions => new ReadOnlyCollection<string>( supportedExtensions );
 
 
 		/// <summary>Returns a value indicating whether a file extension is supported by the content plug-in.</summary>

@@ -9,9 +9,7 @@ namespace ManagedX.Content
 {
 	using Design;
 
-	// Chaque dossier de contenu dispose de son propre gestionnaire de plug-ins ?
-	// Ou alors tous les dossiers de contenu partagent le même gestionnaire ?
-	// L'implémentation actuelle supporte les 2 cas: si un gestionnaire de plug-ins est présent dans les services, le dossier l'utilise, sinon il crée son propre gestionnaire.
+	// Si un gestionnaire de plug-ins est présent dans les services, le dossier l'utilise, sinon il crée son propre gestionnaire.
 
 
 	/// <summary>Base class for content directories.</summary>
@@ -20,10 +18,10 @@ namespace ManagedX.Content
 	{
 
 
-		private IServiceProvider services;
-		private string baseDirectory;
+		private readonly IServiceProvider services;
+		private readonly string baseDirectory;
 		private IContentPluginManager plugInManager;
-		private IDisposable ownPlugInManager;
+		private IDisposable localPlugInManager;
 		private bool disposed;
 
 
@@ -39,6 +37,8 @@ namespace ManagedX.Content
 		[SuppressMessage( "Microsoft.Reliability", "CA2000" )]
 		protected ContentDirectory( IServiceProvider serviceProvider, string baseDirectoryPath )
 		{
+			services = serviceProvider ?? throw new ArgumentNullException( "serviceProvider" );
+
 			if( baseDirectoryPath == null )
 				throw new ArgumentNullException( "baseDirectoryPath" );
 
@@ -46,12 +46,11 @@ namespace ManagedX.Content
 			if( baseDirectoryPath.Length == 0 || baseDirectoryPath.IndexOfAny( Path.GetInvalidPathChars() ) > -1 )
 				throw new ArgumentException( baseDirectoryPath, "baseDirectoryPath" );
 
-			// THINKABOUTME: when baseDirectoryPath is empty, use the current one
+			// THINKABOUTME: when baseDirectoryPath is empty, use the current directory
 
 			if( !Directory.Exists( baseDirectoryPath ) )
 				throw new DirectoryNotFoundException();
 
-			services = serviceProvider ?? throw new ArgumentNullException( "serviceProvider" );
 			baseDirectory = baseDirectoryPath;
 			//openStreams = new List<Stream>();
 			//cache = new Dictionary<string, object>();
@@ -60,7 +59,7 @@ namespace ManagedX.Content
 			if( plugInManager == null )
 			{
 				plugInManager = new ContentPluginManager();
-				ownPlugInManager = plugInManager as IDisposable;
+				localPlugInManager = plugInManager as IDisposable;
 			}
 		}
 
@@ -75,7 +74,7 @@ namespace ManagedX.Content
 		#region IDisposable
 
 		/// <summary>Gets a value indicating whether the <see cref="ContentDirectory"/> has been disposed.</summary>
-		public bool IsDisposed { get { return disposed; } }
+		public bool IsDisposed => disposed;
 
 
 		/// <summary>Closes all open streams and clears the list of content importers.</summary>
@@ -87,10 +86,10 @@ namespace ManagedX.Content
 
 			if( disposing && !disposed )
 			{
-				if( ownPlugInManager != null )
+				if( localPlugInManager != null )
 				{
-					ownPlugInManager.Dispose();
-					ownPlugInManager = null;
+					localPlugInManager.Dispose();
+					localPlugInManager = null;
 				}
 				plugInManager = null;
 				disposed = true;
@@ -110,20 +109,20 @@ namespace ManagedX.Content
 
 
 		/// <summary>Gets the service provider associated with the <see cref="ContentDirectory"/>.</summary>
-		protected IServiceProvider Services { get { return services; } }
+		protected IServiceProvider Services => services;
 
 
 		/// <summary>Gets the path to the base directory (usually where executable binaries are located).</summary>
-		public string BaseDirectoryPath { get { return string.Copy( baseDirectory ); } }
+		public string BaseDirectoryPath => string.Copy( baseDirectory );
 
 
 		/// <summary>Gets the directory where data files are stored.
 		/// <para>Defaults to the <see cref="BaseDirectoryPath"/>.</para>
 		/// </summary>
-		public virtual string DataDirectoryPath { get { return string.Copy( baseDirectory ); } }
+		public virtual string DataDirectoryPath => string.Copy( baseDirectory );
 
 
-		/// <summary>When overridden, gets a value indicating whether the </summary>
+		/// <summary>When overridden, gets a value indicating whether the directory pointed by this <see cref="ContentDirectory"/> is a symbolic link.</summary>
 		public abstract bool IsDataDirectorySymbolicLink { get; }
 
 
@@ -132,9 +131,7 @@ namespace ManagedX.Content
 
 
 		/// <summary>Called when this <see cref="ContentDirectory"/> is reset or disposing.</summary>
-		protected virtual void Unload()
-		{
-		}
+		protected abstract void Unload();
 
 
 		/// <summary>Resets this <see cref="ContentDirectory"/>.
@@ -176,7 +173,7 @@ namespace ManagedX.Content
 		/// <summary>Gets the content plug-in manager associated with the <see cref="ContentDirectory"/>.
 		/// <para>Beware that it might come from the services, and thus be shared with other content directories.</para>
 		/// </summary>
-		public IContentPluginManager ContentPlugins { get { return plugInManager; } }
+		public IContentPluginManager ContentPlugins => plugInManager;
 
 
 		///// <summary>Imports content and returns it.</summary>
@@ -327,7 +324,7 @@ namespace ManagedX.Content
 			if( cd == null )
 				return false;
 			
-			return cd.BaseDirectoryPath.Equals( baseDirectory, StringComparison.OrdinalIgnoreCase );
+			return baseDirectory.Equals( cd.BaseDirectoryPath, StringComparison.OrdinalIgnoreCase );
 		}
 
 
@@ -337,7 +334,6 @@ namespace ManagedX.Content
 		{
 			return string.Copy( baseDirectory );
 		}
-
 
 	}
 

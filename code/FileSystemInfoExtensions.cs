@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 
 
 namespace ManagedX.Content
@@ -13,24 +12,28 @@ namespace ManagedX.Content
 	{
 
 		[System.Security.SuppressUnmanagedCodeSecurity]
-		private static class NativeMethods
+		private static class SafeNativeMethods
 		{
 
-			private const string LibraryName = "kernel32.dll";
+			private const string LibraryName = "Kernel32.dll";
 
 
 			/// <summary>Creates a symbolic link.</summary>
 			/// <param name="symLinkFileName">The symbolic link to be created.</param>
 			/// <param name="targetFileName">The name of the target for the symbolic link to be created.
 			/// If targetFileName has a device name associated with it, the link is treated as an absolute link; otherwise, the link is treated as a relative link.</param>
-			/// <param name="flags">Indicates whether the link target, <paramref name="targetFileName"/>, is a directory.</param>
+			/// <param name="options">Indicates whether the link target, <paramref name="targetFileName"/>, is a directory.</param>
+			/// <returns>
+			/// If the function succeeds, the return value is nonzero.
+			/// If the function fails, the return value is zero. To get extended error information, call GetLastError.
+			/// </returns>
 			/// <remarks>http://msdn.microsoft.com/en-us/library/aa363866%28v=vs.85%29.aspx</remarks>
-			[DllImport( LibraryName, EntryPoint = "CreateSymbolicLinkW", CharSet = CharSet.Unicode, SetLastError = true )]
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
 			[return: MarshalAs( UnmanagedType.Bool )]
-			internal static extern bool CreateSymbolicLink(
-				[In]string symLinkFileName,
-				[In]string targetFileName,
-				[In]int flags
+			internal static extern bool CreateSymbolicLinkW(
+				[In] string symLinkFileName,
+				[In] string targetFileName,
+				[In] int options
 			);
 
 
@@ -38,14 +41,19 @@ namespace ManagedX.Content
 			/// <param name="handle">A handle to a file or directory.</param>
 			/// <param name="filePath">A pointer to a buffer that receives the path of the file or directory pointed by <paramref name="handle"/>.</param>
 			/// <param name="filePathLength">The size of <paramref name="filePath"/>, in TCHARS; doesn't include the NULL termination char.</param>
-			/// <param name="flags">The type of result to return.</param>
-			/// <returns>Returns an HRESULT.</returns>
-			[DllImport( LibraryName, EntryPoint = "GetFinalPathNameByHandleW", CharSet = CharSet.Unicode, SetLastError = true )]
-			internal static extern int GetFinalPathNameByHandle(
-				[In]IntPtr handle,
-				[Out]string filePath,
-				[In]int filePathLength,
-				[In]int flags
+			/// <param name="options">The type of result to return.</param>
+			/// <returns>
+			/// If the function succeeds, the return value is the length of the string received by lpszFilePath, in TCHARs. This value does not include the size of the terminating null character.
+			/// If the function fails because lpszFilePath is too small to hold the string plus the terminating null character, the return value is the required buffer size, in TCHARs. This value includes the size of the terminating null character.
+			/// If the function fails for any other reason, the return value is zero. To get extended error information, call GetLastError.
+			/// </returns>
+			/// <remarks>https://msdn.microsoft.com/en-us/library/aa364962(v=vs.85).aspx</remarks>
+			[DllImport( LibraryName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true, SetLastError = true )]
+			internal static extern int GetFinalPathNameByHandleW(
+				[In] IntPtr handle,
+				[Out] string filePath,
+				[In] int filePathLength,
+				[In] int options
 			);
 
 		}
@@ -55,6 +63,7 @@ namespace ManagedX.Content
 		/// <summary>Returns a value indicating whether a file or directory is a symbolic link.</summary>
 		/// <param name="self">A <see cref="FileSystemInfo"/> of an existing file/directory; must not be null.</param>
 		/// <exception cref="ArgumentNullException"/>
+		[Obsolete( "" )]
 		public static bool IsSymbolicLink( this FileSystemInfo self )
 		{
 			if( self == null )
@@ -87,19 +96,10 @@ namespace ManagedX.Content
 					throw new FileNotFoundException();
 
 				var buffer = new string( '\0', 512 );
-				int errCode = 0;
 				using( FileStream stream = fileInfo.Open( FileMode.Open, FileAccess.Read ) )
 				{
-					if( NativeMethods.GetFinalPathNameByHandle( stream.SafeFileHandle.DangerousGetHandle(), buffer, buffer.Length, 0 ) == 0 )
-						errCode = Marshal.GetLastWin32Error();
-				}
-				if( errCode != 0 )
-				{
-					var exception = Marshal.GetExceptionForHR( errCode );
-					if( exception != null )
-						throw exception;
-					else
-						throw new InvalidOperationException();
+					if( SafeNativeMethods.GetFinalPathNameByHandleW( stream.SafeFileHandle.DangerousGetHandle(), buffer, buffer.Length, 0 ) == 0 )
+						throw Marshal.GetExceptionForHR( Marshal.GetLastWin32Error() );
 				}
 
 				return Path.GetDirectoryName( buffer.TrimEnd( '\0' ).Replace( @"\\?\", string.Empty ) );
@@ -161,8 +161,8 @@ namespace ManagedX.Content
 			if( Environment.OSVersion.Version.Major < 6 )
 				throw new NotSupportedException( "Windows Vista or newer required." );
 
-			var principal = new System.Security.Principal.WindowsPrincipal( System.Security.Principal.WindowsIdentity.GetCurrent() );
-			if( !principal.IsInRole( System.Security.Principal.WindowsBuiltInRole.Administrator ) )
+			var principal = new WindowsPrincipal( WindowsIdentity.GetCurrent() );
+			if( !principal.IsInRole( WindowsBuiltInRole.Administrator ) )
 				throw new InvalidOperationException( "The application must be run with administrator privileges." );
 
 			var isTargetDirectory = self is DirectoryInfo;
@@ -175,7 +175,6 @@ namespace ManagedX.Content
 					throw new FileNotFoundException();
 			}
 
-
 			if( isTargetDirectory )
 			{
 				if( Directory.Exists( linkName ) )
@@ -184,14 +183,8 @@ namespace ManagedX.Content
 			else if( File.Exists( linkName ) )
 				return false;
 
-
-			if( !NativeMethods.CreateSymbolicLink( linkName, self.FullName, isTargetDirectory ? 1 : 0 ) )
-			{
-				var errCode = Marshal.GetLastWin32Error();
-				var exception = Marshal.GetExceptionForHR( errCode );
-				throw exception ?? new InvalidOperationException();
-			}
-
+			if( !SafeNativeMethods.CreateSymbolicLinkW( linkName, self.FullName, isTargetDirectory ? 1 : 0 ) )
+				throw Marshal.GetExceptionForHR( Marshal.GetLastWin32Error() );
 
 			if( isTargetDirectory )
 				return Directory.Exists( linkName );

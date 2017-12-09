@@ -8,17 +8,17 @@ using System.Text.RegularExpressions;
 namespace ManagedX.Content
 {
 
-    /// <summary>A <see cref="ContentDirectory" /> with archive support.</summary>
-    /// <typeparam name="TFileDescriptor">Archived file descriptor type.</typeparam>
-    /// <typeparam name="TArchive">Archive type.</typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+	/// <summary>A <see cref="ContentDirectory" /> with archive support.</summary>
+	/// <typeparam name="TFileDescriptor">Archived file descriptor type.</typeparam>
+	/// <typeparam name="TArchive">Archive type.</typeparam>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public abstract class ContentDirectory<TFileDescriptor, TArchive> : ContentDirectory, IEnumerable<TArchive>
 		where TFileDescriptor : FileDescriptor
 		where TArchive : ArchiveStream<TFileDescriptor>
 	{
 
 
-		private Dictionary<string, TArchive> archives;
+		private readonly Dictionary<string, TArchive> archives;
 
 
 
@@ -32,15 +32,6 @@ namespace ManagedX.Content
 			: base( serviceProvider, baseDirectoryPath )
 		{
 			archives = new Dictionary<string, TArchive>();
-		}
-
-
-		/// <summary>Releases unmanaged, and optionally managed resources allocated by this <see cref="ContentDirectory"/>.</summary>
-		/// <param name="disposing">true to release all resources, false to release unmanaged resources only.</param>
-		protected override void Dispose( bool disposing )
-		{
-			base.Dispose( disposing );
-			archives = null;
 		}
 
 
@@ -67,7 +58,7 @@ namespace ManagedX.Content
 
 
 		/// <summary>Gets the number of currently loaded archives.</summary>
-		public int ArchiveCount { get { return archives.Count; } }
+		public int ArchiveCount => archives.Count;
 
 
 		/// <summary>Returns the first archive that contains the specified file.</summary>
@@ -141,30 +132,15 @@ namespace ManagedX.Content
 		/// <summary>Closes all open archives.</summary>
 		protected override void Unload()
 		{
-			if( archives == null )
-				return;
-
 			foreach( var archive in archives.Values )
 			{
 				if( archive != null )
-					try
-					{
-						archive.Dispose();
-					}
-					catch( ObjectDisposedException )
-					{
-					}
+					archive.Dispose();
 			}
 			archives.Clear();
 		}
 
 		#endregion Archives
-
-
-		/// <summary>Initializes this <see cref="ContentDirectory"/>.
-		/// <para>When overridden, opens all archives present in the directory and reads their table of contents.</para>
-		/// </summary>
-		public abstract override void Initialize();
 
 
 
